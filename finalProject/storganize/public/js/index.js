@@ -14,7 +14,9 @@ var customer = {
   dateOfFirstBilling: undefined,
   payMonthlyDate: undefined,
   signUpDate: undefined,
-  items: undefined
+  numberOfItems: undefined,
+  items: undefined,
+  deliveryLog: undefined
   // items: [
   //   {
   //     customers: {
@@ -186,8 +188,10 @@ function handleAuthStateChange() {
     customer.customerName = user.displayName;
     customer.email = user.email;
     customer.uid = user.uid;
-    console.log(customer);
-    firebase.database().ref('customers').on('value', updateModel);
+
+    firebase.database().ref('customers').on('value', updateProfile);
+    firebase.database().ref('Items').on('value', updateItems);
+    firebase.database().ref('deliveries').on('value', updateDeliveries);
 
   } else {
     customer.signedIn = false;
@@ -197,9 +201,52 @@ function handleAuthStateChange() {
   renderAllTemplates();
 }
 
-function updateModel(snapshot) {
-  var update = snapshot.val();
-  customer.serviceTier = update.kpHpTPR9RGe3ib7asl9oaZDSr7l2.serviceTier;
+function updateProfile(snapshot) {
+  var updateProfile = (snapshot.val()).kpHpTPR9RGe3ib7asl9oaZDSr7l2;
+
+  customer.serviceTier = updateProfile.serviceTier;
+  customer.paidUpfront = updateProfile.paidUpfront;
+  customer.dateOfFirstBilling = updateProfile.dateOfFirstBilling;
+  customer.payMonthlyDate = updateProfile.payMonthlyDate;
+  customer.signUpDate = updateProfile.signUpDate;
+
+  renderAllTemplates();
+}
+
+function updateItems(snapshot) {
+  var updateItems = snapshot.val();
+  var itemsFromDb = [];
+
+  for(var i in updateItems) {
+    itemsFromDb.push(updateItems[i]);
+  } 
+
+  var itemCount = 0;
+
+  for (property in updateItems) {
+    if(updateItems.hasOwnProperty(property))
+    {
+      itemCount++;
+    }
+  }
+
+  customer.items = itemsFromDb;
+  customer.numberOfItems = itemCount;
+
+  renderAllTemplates();
+}
+
+function updateDeliveries(snapshot) {
+  var updateDeliveries = snapshot.val();
+  var deliveriesFromDb = [];
+
+  for(var i in updateDeliveries) {
+    deliveriesFromDb.push(updateDeliveries[i]);
+  } 
+
+  customer.deliveryLog = deliveriesFromDb;
+
+  renderAllTemplates();
 }
 
 // Delivery Controller
@@ -264,7 +311,8 @@ function setup() {
 
   // Database Event Listeners
   
-  // Create
+  // Create Delivery Request
+  $('#scheduleDelivery').on('click', '#register', handleRegister);
   // firebase.database().ref(key).on('value', __callback__g)
 
   $('#scheduleDelivery').on('click', '#showScheduleDelivery', revealDeliveryForm);

@@ -60,7 +60,7 @@
   <!-- Login Template -->
   <script type="text/x-handlebars-template" id="loginInformationTemplate">
     {{#if signedIn}}
-      <h2>{{user}}</h2> <button id="logout">Logout</button>
+      <h2>Welcome!</h2> <button id="logout">Logout</button>
     {{else}}
       <h1>Storganize</h1>
       <button id='googleLogin'>Register/Sign in with Google</button>
@@ -82,7 +82,7 @@
         Name: {{customerName}} <br> 
         E-mail: {{email}} <br>
         Service Tier: {{serviceTier}} <br>
-        Number of Items: {{items.length}} <br>
+        Signup Date: {{signUpDate}} <br>
         Date of First Billing: {{dateOfFirstBilling}}
       </p>
     {{/if}}
@@ -121,7 +121,7 @@
   <!-- View Items Template -->
   <script type="text/x-handlebars-template" id="viewItemsTemplate">
     {{#if signedIn}}  
-      <h2>Your Items:</h2>
+      <h2>Your Items ({{numberOfItems}}):</h2>
       {{#each items}}    
         <p data-id="@key">
           {{itemTagNumber}} - {{itemDescription}} <br>
@@ -148,7 +148,6 @@
             {{/each}}
           </div>
           <input id="scheduleDeliverySubmit" type="submit" value="Submit">
-          <div id="countChecked"></div>
         </form>
       </div>
     {{/if}}
