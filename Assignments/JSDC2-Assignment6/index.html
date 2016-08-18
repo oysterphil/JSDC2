@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Khanban</title>
+  <link href="css/style.css" rel="stylesheet"/>
+</head>
+<body>
+	<div class="container">
+		<h1>Khanban</h1>
+		<form id="addTaskForm">
+		  <input id="todoInput" type="text">
+		  <input type="submit" value="Submit">
+		</form>
+		<button id="load">Load</button>
+
+		<div id="khanban">
+		</div>
+	</div>
+
+	<script src="https://code.jquery.com/jquery-3.0.0.min.js" integrity="sha256-JmvOoLtYsmqlsWxa7mDSLMwa6dZ9rrIdtrrVYRnDRH0="   crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.min.js"></script>
+	<script type="text/javascript" src="js/index.js"></script>
+  <script id="board-template" type="text/x-handlebars-template">
+    <div class="board">
+			<div id="todo" class="column">
+				<h2>To Do</h2>
+				{{#each todos}}
+					<div id="{{id}}" class="card" draggable="true">
+					  <p>{{text}}</p>
+						<div class="delete">X</div>
+					</div>
+			  {{/each}}
+			</div>
+			<div id="doing" class="column">
+				<h2>Doing</h2>
+				{{#each doings}}
+					<div id="{{id}}" class="card" draggable="true">
+					  <p>{{text}}</p>
+						<div class="delete">X</div>
+					</div>
+			  {{/each}}
+			</div>
+			<div id="done" class="column">
+				<h2>Done</h2>
+				{{#each dones}}
+					<div id="{{id}}" class="card" draggable="true">
+					  <p>{{text}}</p>
+						<div class="delete">X</div>
+					</div>
+			  {{/each}}
+			</div>
+		</div>
+  </script>
+</body>
+</html>

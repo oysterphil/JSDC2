@@ -1,0 +1,157 @@
+<!--GA JS-DC-2 Final Project - Build a Storganize Profile-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Link to CSS files in the <head></head> -->
+
+<head>
+  <title>Storganize</title>
+  <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/live/0.4/firebase-ui-auth.css" />
+  <link rel="stylesheet" type="text/css" href="css/style.css">
+</head> 
+
+<body>
+  <!-- Login Information -->
+  <div id='loginInformation'></div>
+
+  <!-- Profile Information -->
+  <p id="profileInformation"></p>
+
+  <!-- Delivery Information -->
+  <p id="deliveryLog"></p>
+
+  <!-- Item Information -->
+  <p id="viewItems"></p>
+
+  <!-- Schedule Delivery Form -->
+  <p id="scheduleDelivery"></p>
+
+  <!-- Initializing Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/3.2.0/firebase.js"></script>
+  <script>
+    // Initialize Firebase
+    var config = {
+      apiKey: "AIzaSyCUCeMQtapot0DD8Tq2f4xPEy9_VL-yGE4",
+      authDomain: "ga-final-project-67167.firebaseapp.com",
+      databaseURL: "https://ga-final-project-67167.firebaseio.com",
+      storageBucket: "ga-final-project-67167.appspot.com",
+    };
+    firebase.initializeApp(config);
+
+    // Get a reference to the database service
+    var database = firebase.database();
+  </script>
+
+  <!-- Initializing FirebaseUI for Web — Auth -->
+  <script src="https://www.gstatic.com/firebasejs/ui/live/0.4/firebase-ui-auth.js"></script>
+      
+  <!--Pulling in JQuery-->
+  <script src="https://code.jquery.com/jquery-3.0.0.min.js" integrity="sha256-JmvOoLtYsmqlsWxa7mDSLMwa6dZ9rrIdtrrVYRnDRH0="   crossorigin="anonymous"></script>
+
+  <!--Pulling in Handlebars-->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.min.js"></script>
+
+  <!--Pulling in JS code from file js-->
+  <script type="text/javascript" src="js/index.js"></script>
+  
+  <!--Handlebars Templates-->
+
+  <!-- Login Template -->
+  <script type="text/x-handlebars-template" id="loginInformationTemplate">
+    {{#if signedIn}}
+      <h2>{{user}}</h2> <button id="logout">Logout</button>
+    {{else}}
+      <h1>Storganize</h1>
+      <button id='googleLogin'>Register/Sign in with Google</button>
+      <div id="registerLoginForm">
+        <h3>Register/Login</h3>
+        <input name="email" type="email" placeholder="Email Address" />
+        <input name="password" type="password" placeholder="Password" />
+        <input id="register" type="submit" value="Register" />
+        <input id="login" type="submit" value="Login" />
+      </div>
+    {{/if}}
+  </script>
+
+  <!-- Profile Template -->
+  <script type="text/x-handlebars-template" id="profileInformationTemplate">
+    {{#if signedIn}}
+      <h2>Profile Information:</h2>
+      <p>
+        Name: {{customerName}} <br> 
+        E-mail: {{email}} <br>
+        Service Tier: {{serviceTier}} <br>
+        Number of Items: {{items.length}} <br>
+        Date of First Billing: {{dateOfFirstBilling}}
+      </p>
+    {{/if}}
+  </script>
+  
+  <!-- Delivery History Template -->
+  <script type="text/x-handlebars-template" id="viewDeliveriesTemplate">    
+    {{#if signedIn}}
+      <h2>Deliveries:</h2>
+      <h3>Upcoming Deliveries</h3>  
+        {{#each deliveryLog}}
+          {{#if delivered}} 
+          {{else}}   
+            <p data-id="@key">
+              {{deliveryDate}} to {{deliveryAddress}} at {{deliveryTime}} of <br>
+              {{#each deliveryItems}}
+                {{itemTagNumber}} - {{itemDescription}} <br>
+              {{/each}}
+            </p>
+          {{/if}}
+        {{/each}}
+      <h3>Past Deliveries</h3>
+        {{#each deliveryLog}}
+          {{#if delivered}}  
+            <p data-id="@key">
+              {{deliveryDate}} to {{deliveryAddress}} at {{deliveryTime}} of <br>
+              {{#each deliveryItems}}
+                {{itemTagNumber}} - {{itemDescription}} <br>
+              {{/each}}
+            </p>
+          {{/if}}
+        {{/each}}
+    {{/if}}
+  </script>
+
+  <!-- View Items Template -->
+  <script type="text/x-handlebars-template" id="viewItemsTemplate">
+    {{#if signedIn}}  
+      <h2>Your Items:</h2>
+      {{#each items}}    
+        <p data-id="@key">
+          {{itemTagNumber}} - {{itemDescription}} <br>
+          <img src="{{itemPhoto}}" width="100px" height="100px">
+        </p>
+      {{/each}}
+    {{/if}}
+  </script>
+
+  <!-- Schedule a Delivery Template -->
+  <script type="text/x-handlebars-template" id="scheduleDeliveryTemplate">
+    {{#if signedIn}} 
+    <button id='showScheduleDelivery'>Schedule a Delivery:</button>
+      <div class="container">
+        <form id="scheduleDeliveryForm" style="display:none">
+          Delivery Date: <input id="scheduleDeliveryDate" type="text"><br>
+          Delivery Time: <input id="scheduleDeliveryTime" type="text"><br>
+          Delivery Address: <input id="scheduleDeliveryAddress" type="text"><br>
+          Delivery Items:<br>
+          <div id="selectItems">
+            {{#each items}}
+              <input data-description="{{itemDescription}}" data-id="@key" data-photo="{{itemPhoto}}" type="checkbox" value="{{itemTagNumber}}">{{itemTagNumber}} - {{itemDescription}}
+              <img src="{{itemPhoto}}" width="50px" height="50px"><br>
+            {{/each}}
+          </div>
+          <input id="scheduleDeliverySubmit" type="submit" value="Submit">
+          <div id="countChecked"></div>
+        </form>
+      </div>
+    {{/if}}
+  </script>
+</body>
+</html>

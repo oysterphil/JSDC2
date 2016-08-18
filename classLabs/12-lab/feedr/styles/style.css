@@ -1,0 +1,85 @@
+/* Header styles */
+header {
+  background-color: #FE052C;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+}
+
+header h1 {
+  color: #FFF;
+  padding: 10px 2%;
+  margin: 0;
+  width: 16%;
+  float: left;
+  padding-left: 0;
+}
+
+/* Header navigation bar */
+header nav {
+  padding: 12px 0;
+  float: right;
+}
+
+/* Main Section */
+#categories {
+  margin-top: 72px;
+  margin-bottom: 15px;
+}
+
+#categories .label {
+  cursor: pointer;
+}
+
+#label-default {
+    background-color: #777;
+}
+
+.username {
+  color: white;
+  line-height: 32px;
+}
+
+/* Individual Article Styling */
+.article {
+  border-bottom: 1px solid #ccc;
+  transition: 0.2s all;
+  cursor: pointer;
+}
+
+.article:hover {
+  background-color: #eee;
+}
+
+.article .featuredImage img {
+  width: 100%;
+  max-height: 74px;
+  border-radius: 50px;
+  margin-top: 14px;
+  margin-bottom: 14px;
+}
+
+.article .articleContent a {
+  text-decoration: none;
+}
+
+.article .articleContent h3 {
+  margin-top: 14px;
+  margin-bottom: 8px;
+  color: #FE052C;
+  display: inline-block;
+}
+
+.article .articleContent h6 {
+  margin-top: 0;
+  color: #666;
+}
+
+.article .source {
+  font-size: 12px;
+  margin-top: 15px;
+  text-align: right;
+  color: #097FB2;
+}
